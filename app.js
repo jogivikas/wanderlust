@@ -1,7 +1,7 @@
 // Enable dotenv only in development
-// if (process.env.NODE_ENV !== "production") {
-//   require("dotenv").config();
-// }
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 const express = require("express");
 const app = express();
@@ -24,7 +24,7 @@ const { reviewSchema } = require("./schema.js");
 
 const listingsRouter = require("./routes/listing.js");
 const userRouter = require("./routes/user.js");
-// const reviewsRouter = require("./routes/reviews.js"); // ✅ Don't forget this
+const reviewsRouter = require("./routes/review.js");
 
 // ----------------------
 // Database connection
@@ -55,7 +55,7 @@ const sessionOption = {
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true, // ✅ Fixed typo
+    httpOnly: true,
   },
 };
 app.use(session(sessionOption));
@@ -82,13 +82,13 @@ app.use((req, res, next) => {
 // ----------------------
 // Routes
 // ----------------------
-// app.get("/", (req, res) => {
-//   res.send("Hi, I am root");
-// });
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 
 app.use("/listings", listingsRouter);
 app.use("/", userRouter);
-// app.use("/", reviewsRouter); // ✅ Move review routes into this file
+app.use("/", reviewsRouter);
 
 // ----------------------
 // 404 Handler

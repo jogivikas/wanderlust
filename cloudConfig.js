@@ -1,43 +1,21 @@
-// // const cloudinary = require('cloudinary').v2;
-// // const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// // cloudinary.config({
-// //     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-// //     api_key: process.env.CLOUDINARY_KEY,
-// //     api_secret: process.env.CLOUDINARY_SECRET
-// // });
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
+});
 
-// // const storage = new CloudinaryStorage({
-// //     cloudinary,
-// //     params: {
-// //         folder: 'wanderlust_DEV',
-// //         allowedFormats: ['jpeg', 'png', 'jpg']
-// //     }
-// // });
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'wanderlust_DEV',
+        allowedFormats: ['jpeg', 'png', 'jpg'], // corrected from allowed_formats
+    },
+});
 
-// // module.exports = {
-// //     cloudinary,
-// //     storage,
-// // };
-// const cloudinary = require('cloudinary').v2;
-// const { CloudinaryStorage } = require('multer-storage-cloudinary');
-
-// // require('dotenv').config();
-// cloudinary.config({
-//     cloud_name: process.env.CLOUD_NAME,
-//     api_key: process.env.CLOUD_API_KEY,
-//     api_secret: process.env.CLOUD_API_SECRET
-// });
-
-// const storage = new CloudinaryStorage({
-//     cloudinary: cloudinary,
-//     params: {
-//         folder: 'wanderlust_DEV',
-//         allowed_formats: ['jpeg', 'png', 'jpg']
-//     }
-// });
-
-// module.exports = {
-//     cloudinary,
-//     storage,
-// };
+module.exports = {
+    cloudinary,
+    storage,
+};
