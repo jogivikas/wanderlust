@@ -1,14 +1,19 @@
 const mongoose = require("mongoose");
-const initData = require("./data.js");  // Ensure this path is correct
+const dotenv = require("dotenv");
+const initData = require("./data.js");
 const Listing = require("../models/listing.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+// Load environment variables
+dotenv.config();
+
+const MONGO_URL = process.env.MONGO_URL;
+const OWNER_ID = process.env.OWNER_ID;
 
 // Connecting to MongoDB
 main()
   .then(() => {
     console.log("connected to DB");
-    initDB();  // After successful connection, initialize the DB
+    initDB();
   })
   .catch((err) => {
     console.log("Error connecting to MongoDB:", err);
@@ -21,17 +26,18 @@ async function main() {
 // Initialize the database with sample listings
 const initDB = async () => {
   try {
-    // Clear the existing listings (optional, to refresh the data)
     await Listing.deleteMany({});
-    initData.data = initData.data.map((obj) => ({ ...obj, owner: "6863fd76493fbe6514fb70dd" }));
-    // Insert new data from initData
-    await Listing.insertMany(initData.data);
 
+    initData.data = initData.data.map((obj) => ({
+      ...obj,
+      owner: OWNER_ID,
+    }));
+
+    await Listing.insertMany(initData.data);
     console.log("Data was initialized successfully!");
   } catch (error) {
     console.error("Error initializing DB:", error);
   } finally {
-    // Close the connection after the operation
     mongoose.connection.close();
   }
 };
